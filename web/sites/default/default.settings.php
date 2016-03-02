@@ -64,20 +64,36 @@
  * to multiple databases, including multiple types of databases,
  * during the same request.
  *
- * Each database connection is specified as an array of settings,
- * similar to the following:
+ * One example of the simplest connection array is shown below. To use the
+ * sample settings, copy and uncomment the code below between the @code and
+ * @endcode lines and paste it after the $databases declaration. You will need
+ * to replace the database username and password and possibly the host and port
+ * with the appropriate credentials for your database system.
+ *
+ * The next section describes how to customize the $databases array for more
+ * specific needs.
+ *
  * @code
- * array(
- *   'driver' => 'mysql',
+ * $databases['default']['default'] = array (
  *   'database' => 'databasename',
- *   'username' => 'username',
- *   'password' => 'password',
+ *   'username' => 'sqlusername',
+ *   'password' => 'sqlpassword',
  *   'host' => 'localhost',
- *   'port' => 3306,
- *   'prefix' => 'myprefix_',
+ *   'port' => '3306',
+ *   'driver' => 'mysql',
+ *   'prefix' => '',
  *   'collation' => 'utf8mb4_general_ci',
  * );
  * @endcode
+ */
+ $databases = array();
+
+/**
+ * Customizing database settings.
+ *
+ * Many of the values of the $databases array can be customized for your
+ * particular database system. Refer to the sample in the section above as a
+ * starting point.
  *
  * The "driver" property indicates what Drupal database driver the
  * connection should use.  This is usually the same as the name of the
@@ -117,19 +133,6 @@
  * of potential replica databases.  Drupal will select one at random for a given
  * request as needed.  The fourth line creates a new database with a name of
  * "extra".
- *
- * For a single database configuration, the following is sufficient:
- * @code
- * $databases['default']['default'] = array(
- *   'driver' => 'mysql',
- *   'database' => 'databasename',
- *   'username' => 'username',
- *   'password' => 'password',
- *   'host' => 'localhost',
- *   'prefix' => 'main_',
- *   'collation' => 'utf8mb4_general_ci',
- * );
- * @endcode
  *
  * You can optionally set prefixes for some or all database table names
  * by using the 'prefix' setting. If a prefix is specified, the table
@@ -174,7 +177,6 @@
  * connecting to the database server, as well as PDO connection settings. For
  * example, to enable MySQL SELECT queries to exceed the max_join_size system
  * variable, and to reduce the database connection timeout to 5 seconds:
- *
  * @code
  * $databases['default']['default'] = array(
  *   'init_commands' => array(
@@ -186,59 +188,59 @@
  * );
  * @endcode
  *
- * WARNING: These defaults are designed for database portability. Changing them
- * may cause unexpected behavior, including potential data loss.
+ * WARNING: The above defaults are designed for database portability. Changing
+ * them may cause unexpected behavior, including potential data loss. See
+ * https://www.drupal.org/developing/api/database/configuration for more
+ * information on these defaults and the potential issues.
  *
- * @see DatabaseConnection_mysql::__construct
- * @see DatabaseConnection_pgsql::__construct
- * @see DatabaseConnection_sqlite::__construct
+ * More details can be found in the constructor methods for each driver:
+ * - \Drupal\Core\Database\Driver\mysql\Connection::__construct()
+ * - \Drupal\Core\Database\Driver\pgsql\Connection::__construct()
+ * - \Drupal\Core\Database\Driver\sqlite\Connection::__construct()
  *
- * Database configuration format:
+ * Sample Database configuration format for PostgreSQL (pgsql):
  * @code
- *   $databases['default']['default'] = array(
- *     'driver' => 'mysql',
- *     'database' => 'databasename',
- *     'username' => 'username',
- *     'password' => 'password',
- *     'host' => 'localhost',
- *     'prefix' => '',
- *   );
  *   $databases['default']['default'] = array(
  *     'driver' => 'pgsql',
  *     'database' => 'databasename',
- *     'username' => 'username',
- *     'password' => 'password',
+ *     'username' => 'sqlusername',
+ *     'password' => 'sqlpassword',
  *     'host' => 'localhost',
  *     'prefix' => '',
  *   );
+ * @endcode
+ *
+ * Sample Database configuration format for SQLite (sqlite):
+ * @code
  *   $databases['default']['default'] = array(
  *     'driver' => 'sqlite',
  *     'database' => '/path/to/databasefilename',
  *   );
  * @endcode
  */
-$databases = array();
 
 /**
  * Location of the site configuration files.
  *
  * The $config_directories array specifies the location of file system
- * directories used for configuration data. On install, "active" and "staging"
- * directories are created for configuration. The staging directory is used for
- * configuration imports; the active directory is not used by default, since the
- * default storage for active configuration is the database rather than the file
- * system (this can be changed; see "Active configuration settings" below).
+ * directories used for configuration data. On install, the "sync" directory is
+ * created. This is used for configuration imports. The "active" directory is
+ * not created by default since the default storage for active configuration is
+ * the database rather than the file system. (This can be changed. See "Active
+ * configuration settings" below).
  *
- * The default location for the active and staging directories is inside a
- * randomly-named directory in the public files path; this setting allows you to
- * override these locations. If you use files for the active configuration, you
- * can enhance security by putting the active configuration outside your
- * document root.
+ * The default location for the "sync" directory is inside a randomly-named
+ * directory in the public files path. The setting below allows you to override
+ * the "sync" location.
+ *
+ * If you use files for the "active" configuration, you can tell the
+ * Configuration system where this directory is located by adding an entry with
+ * array key CONFIG_ACTIVE_DIRECTORY.
  *
  * Example:
  * @code
  *   $config_directories = array(
- *     CONFIG_STAGING_DIRECTORY => '/another/directory/outside/webroot',
+ *     CONFIG_SYNC_DIRECTORY => '/directory/outside/webroot',
  *   );
  * @endcode
  */
@@ -311,20 +313,25 @@ $settings['update_free_access'] = FALSE;
 /**
  * External access proxy settings:
  *
- * If your site must access the Internet via a web proxy then you can enter
- * the proxy settings here. Currently only basic authentication is supported
- * by using the username and password variables. The proxy_user_agent variable
- * can be set to NULL for proxies that require no User-Agent header or to a
- * non-empty string for proxies that limit requests to a specific agent. The
- * proxy_exceptions variable is an array of host names to be accessed directly,
- * not via proxy.
+ * If your site must access the Internet via a web proxy then you can enter the
+ * proxy settings here. Set the full URL of the proxy, including the port, in
+ * variables:
+ * - $settings['http_client_config']['proxy']['http']: The proxy URL for HTTP
+ *   requests.
+ * - $settings['http_client_config']['proxy']['https']: The proxy URL for HTTPS
+ *   requests.
+ * You can pass in the user name and password for basic authentication in the
+ * URLs in these settings.
+ *
+ * You can also define an array of host names that can be accessed directly,
+ * bypassing the proxy, in $settings['http_client_config']['proxy']['no'].
+ *
+ * If these settings are not configured, the system environment variables
+ * HTTP_PROXY, HTTPS_PROXY, and NO_PROXY on the web server will be used instead.
  */
-# $settings['proxy_server'] = '';
-# $settings['proxy_port'] = 8080;
-# $settings['proxy_username'] = '';
-# $settings['proxy_password'] = '';
-# $settings['proxy_user_agent'] = '';
-# $settings['proxy_exceptions'] = array('127.0.0.1', 'localhost');
+# $settings['http_client_config']['proxy']['http'] = 'http://proxy_user:proxy_pass@example.com:8080';
+# $settings['http_client_config']['proxy']['https'] = 'http://proxy_user:proxy_pass@example.com:8080';
+# $settings['http_client_config']['proxy']['no'] = ['127.0.0.1', 'localhost'];
 
 /**
  * Reverse Proxy Configuration:
@@ -369,7 +376,31 @@ $settings['update_free_access'] = FALSE;
  * Set this value if your proxy server sends the client IP in a header
  * other than X-Forwarded-For.
  */
-# $settings['reverse_proxy_header'] = 'HTTP_X_CLUSTER_CLIENT_IP';
+# $settings['reverse_proxy_header'] = 'X_CLUSTER_CLIENT_IP';
+
+/**
+ * Set this value if your proxy server sends the client protocol in a header
+ * other than X-Forwarded-Proto.
+ */
+# $settings['reverse_proxy_proto_header'] = 'X_FORWARDED_PROTO';
+
+/**
+ * Set this value if your proxy server sends the client protocol in a header
+ * other than X-Forwarded-Host.
+ */
+# $settings['reverse_proxy_host_header'] = 'X_FORWARDED_HOST';
+
+/**
+ * Set this value if your proxy server sends the client protocol in a header
+ * other than X-Forwarded-Port.
+ */
+# $settings['reverse_proxy_port_header'] = 'X_FORWARDED_PORT';
+
+/**
+ * Set this value if your proxy server sends the client protocol in a header
+ * other than Forwarded.
+ */
+# $settings['reverse_proxy_forwarded_header'] = 'FORWARDED';
 
 /**
  * Page caching:
@@ -446,12 +477,25 @@ if ($settings['hash_salt']) {
 # $settings['allow_authorize_operations'] = FALSE;
 
 /**
- * Default mode for for directories and files written by Drupal.
+ * Default mode for directories and files written by Drupal.
  *
  * Value should be in PHP Octal Notation, with leading zero.
  */
 # $settings['file_chmod_directory'] = 0775;
 # $settings['file_chmod_file'] = 0664;
+
+/**
+ * Public file base URL:
+ *
+ * An alternative base URL to be used for serving public files. This must
+ * include any leading directory path.
+ *
+ * A different value from the domain used by Drupal to be used for accessing
+ * public files. This can be used for a simple CDN integration, or to improve
+ * security by serving user-uploaded files from a different domain or subdomain
+ * pointing to the same server. Do not include a trailing slash.
+ */
+# $settings['file_public_base_url'] = 'http://downloads.example.com/files';
 
 /**
  * Public file path:
@@ -515,28 +559,6 @@ if ($settings['hash_salt']) {
 # $settings['maintenance_theme'] = 'bartik';
 
 /**
- * Base URL (optional).
- *
- * If Drupal is generating incorrect URLs on your site, which could
- * be in HTML headers (links to CSS and JS files) or visible links on pages
- * (such as in menus), uncomment the Base URL statement below (remove the
- * leading hash sign) and fill in the absolute URL to your Drupal installation.
- *
- * You might also want to force users to use a given domain.
- * See the .htaccess file for more information.
- *
- * Examples:
- *   $base_url = 'http://www.example.com';
- *   $base_url = 'http://www.example.com:8888';
- *   $base_url = 'http://www.example.com/drupal';
- *   $base_url = 'https://www.example.com:8888/drupal';
- *
- * It is not allowed to have a trailing slash; Drupal will add it
- * for you.
- */
-# $base_url = 'http://www.example.com';  // NO trailing slash!
-
-/**
  * PHP settings:
  *
  * To see what PHP settings are possible, including whether they can be set at
@@ -565,6 +587,10 @@ if ($settings['hash_salt']) {
  * By default, the active configuration is stored in the database in the
  * {config} table. To use a different storage mechanism for the active
  * configuration, do the following prior to installing:
+ * - Create an "active" directory and declare its path in $config_directories
+ *   as explained under the 'Location of the site configuration files' section
+ *   above in this file. To enhance security, you can declare a path that is
+ *   outside your document root.
  * - Override the 'bootstrap_config_storage' setting here. It must be set to a
  *   callable that returns an object that implements
  *   \Drupal\Core\Config\StorageInterface.
