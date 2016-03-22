@@ -74,12 +74,15 @@ if (getenv("PLATFORM_RELATIONSHIPS")) {
 
   $routes = json_decode(base64_decode($_ENV['PLATFORM_ROUTES']), TRUE);
 
-  if (!isset($conf['file_private_path'])) {
-    if(!$application_home = getenv('PLATFORM_APP_DIR')) {
-      $application_home = '/app';
-    }
-    $conf['file_private_path'] = $application_home . '/private';
-    $conf['file_temporary_path'] = $application_home . '/tmp';
+  // Set the private and temporay paths.
+  if(!$application_home = getenv('PLATFORM_APP_DIR')) {
+    $application_home = '/app';
+  }
+  if (!isset($settings['file_private_path'])) {
+    $settings['file_private_path'] = $application_home . '/private';
+  }
+  if (!isset($config['system.file']['path']['temporary'])) {
+    $config['system.file']['path']['temporary'] = $application_home . '/tmp';
   }
 
   $variables = json_decode(base64_decode($_ENV['PLATFORM_VARIABLES']), TRUE);
