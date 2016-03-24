@@ -52,7 +52,6 @@ disk: 2048
 mounts:
     "/web/sites/default/files": "shared:files/files"
     "/tmp": "shared:files/tmp"
-    "/config": "shared:files/config"
     "/private": "shared:files/private"
 
 # The hooks executed at various points in the lifecycle of the application.
@@ -60,6 +59,8 @@ hooks:
     # We run deploy hook after your application has been deployed and started.
     deploy: |
       cd web
+      drush -y cache-rebuild
+      drush -y config-import
       drush -y updatedb
 
 # The configuration of scheduled execution.
