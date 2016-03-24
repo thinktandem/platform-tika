@@ -32,7 +32,7 @@ web:
         "/":
             # The folder to serve static assets for this location from.
             # (Relative to the application root.)
-            root: "public"
+            root: "web"
 
             # How long to allow static assets from this location to be cached.
             # (Can be a time or -1 for no caching. Times can be suffixed with
