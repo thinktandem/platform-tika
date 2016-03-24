@@ -4,111 +4,46 @@
  * Platform.sh example settings.php file for Drupal 8.
  */
 
-// Install with the 'standard' profile for this example.
-$settings['install_profile'] = 'standard';
-
-// You should modify the hash_salt so that it is specific to your application.
-$settings['hash_salt'] = '4946c1912834b8477cc70af309a2c30dcec24c2103c724ff30bf13b4c10efd82';
-
-/**
- * Default Drupal 8 settings.
- *
- * These are already explained with detailed comments in Drupal's
- * default.settings.php file.
- *
- * See https://api.drupal.org/api/drupal/sites!default!default.settings.php/8
- */
-$databases = array();
-$config_directories = array();
+// Default Drupal 8 settings.
+//
+// These are already explained with detailed comments in Drupal's
+// default.settings.php file.
+//
+// See https://api.drupal.org/api/drupal/sites!default!default.settings.php/8
+$databases = [];
+$config_directories = [];
 $settings['update_free_access'] = FALSE;
 $settings['container_yamls'][] = __DIR__ . '/services.yml';
 
-// Override paths for config files in Platform.sh.
-// Define a config sync directory outside the document root.
+// Install with the 'standard' profile for this example.
+//
+// As the settings.php file is not writable during install on Platform.sh (for
+// good reasons), Drupal will refuse to install a profile that is not defined
+// here.
+$settings['install_profile'] = 'standard';
+
+// You should modify the hash_salt so that it is specific to your application.
+//
+// You can do this with a Platform.sh environment variable (drupal:hash_salt or
+// d8settings:hash_salt).
+$settings['hash_salt'] = '4946c1912834b8477cc70af309a2c30dcec24c2103c724ff30bf13b4c10efd82';
+
+// Set up a config sync directory outside the document root.
+//
+// This is defined inside the writable "config" mount. You may wish to change
+// this to be deployed via Git (and thus in a read-only directory). However,
+// at the moment that means Drupal will not be installable.
+// See issue: https://www.drupal.org/node/2607352
 if (isset($_ENV['PLATFORM_APP_DIR'])) {
   $config_directories[CONFIG_SYNC_DIRECTORY] = $_ENV['PLATFORM_APP_DIR'] . '/config/sync';
 }
 
-// Set trusted hosts based on real Platform.sh routes.
-if (isset($_ENV['PLATFORM_ROUTES'])) {
-  $routes = json_decode(base64_decode($_ENV['PLATFORM_ROUTES']), TRUE);
-  $settings['trusted_host_patterns'] = array();
-  foreach ($routes as $url => $route) {
-    $host = parse_url($url, PHP_URL_HOST);
-    if ($host !== FALSE && $route['type'] == 'upstream' && $route['upstream'] == $_ENV['PLATFORM_APPLICATION_NAME']) {
-      $settings['trusted_host_patterns'][] = '^' . preg_quote($host) . '$';
-    }
-  }
-  $settings['trusted_host_patterns'] = array_unique($settings['trusted_host_patterns']);
+// Automatic Platform.sh settings.
+if (file_exists(__DIR__ . '/settings.platformsh.php')) {
+  include __DIR__ . '/settings.platformsh.php';
 }
 
-// Because we're using the Composer toolstack, we replicate the necessary local
-// settings file for Drupal here.
-
-if (getenv("PLATFORM_RELATIONSHIPS")) {
-  // Configure relationships.
-  $relationships = json_decode(base64_decode($_ENV['PLATFORM_RELATIONSHIPS']), TRUE);
-
-  if (empty($databases['default']['default'])) {
-    foreach ($relationships['database'] as $endpoint) {
-      $database = array(
-        'driver' => $endpoint['scheme'],
-        'database' => $endpoint['path'],
-        'username' => $endpoint['username'],
-        'password' => $endpoint['password'],
-        'host' => $endpoint['host'],
-      );
-
-      if (!empty($endpoint['query']['compression'])) {
-        $database['pdo'][PDO::MYSQL_ATTR_COMPRESS] = TRUE;
-      }
-
-      if (!empty($endpoint['query']['is_master'])) {
-        $databases['default']['default'] = $database;
-      }
-      else {
-        $databases['default']['slave'][] = $database;
-      }
-    }
-  }
-
-  $routes = json_decode(base64_decode($_ENV['PLATFORM_ROUTES']), TRUE);
-
-  // Set the private and temporay paths.
-  if(!$application_home = getenv('PLATFORM_APP_DIR')) {
-    $application_home = '/app';
-  }
-  if (!isset($settings['file_private_path'])) {
-    $settings['file_private_path'] = $application_home . '/private';
-  }
-  if (!isset($config['system.file']['path']['temporary'])) {
-    $config['system.file']['path']['temporary'] = $application_home . '/tmp';
-  }
-
-  $variables = json_decode(base64_decode($_ENV['PLATFORM_VARIABLES']), TRUE);
-
-  $prefix_len = strlen('drupal:');
-  foreach ($variables as $name => $value) {
-    if (substr($name, 0, $prefix_len) == 'drupal:') {
-      $conf[substr($name, $prefix_len)] = $value;
-    }
-  }
-
-  // Default PHP settings.
-  ini_set('session.gc_probability', 1);
-  ini_set('session.gc_divisor', 100);
-  ini_set('session.gc_maxlifetime', 200000);
-  ini_set('session.cookie_lifetime', 2000000);
-  ini_set('pcre.backtrack_limit', 200000);
-  ini_set('pcre.recursion_limit', 200000);
-}
-
-// Force Drupal not to check for HTTP connectivity until we fixed the self test.
-$conf['drupal_http_request_fails'] = FALSE;
-
-// Local settings. These allow local development environments to use their own
-// database connections rather than the Platform-only settings above.
+// Local settings. These come last so that they can override anything.
 if (file_exists(__DIR__ . '/settings.local.php')) {
   include __DIR__ . '/settings.local.php';
 }
-
