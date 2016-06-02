@@ -32,7 +32,10 @@
  *
  * git remote add dc git@github.com:drupal-composer/drupal-project.git
  * git fetch --all
- *
+ * git merge --squash dc/8.x
+ * php scripts/platformsh/Platformify.php
+ * git add .
+ * git commit -m "Your message here"
  *
  */
 
