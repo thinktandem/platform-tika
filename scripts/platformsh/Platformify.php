@@ -4,27 +4,29 @@
 /**
  * @file Platform-ifying script for Drupal 8.
  *
- * The purpose of this script is to reapply the Platform customizations for
+ * The purpose of this script is to reapply the Platform.sh customizations for
  * Drupal 8, Composer-Edition.  It is based on the Drupal-Composer project.
  *
  * Because Platform.sh requires a read-only file system, the initial snapshot
  * that is used for creating a project MUST be able to run without disk
  * modification.  For that reason, we cannot simply use the Drupal-Composer
- * project directly as both it and the normal Drupal installer need to write
- * to the settings.php file.  The alternative is to check only the web directory
- * into Git, including the Platform-specific settings.php and
+ * project directly as both it and the normal Drupal installer need to write to
+ * the settings.php file.  The alternative is to check only the web directory
+ * into Git, including the Platform.sh-specific settings.php and
  * settings.platformsh.php files.
  *
  * The only files in this repository that should be directly updated are:
  *
  * - This script, if necessary, but probably not.
- * - scripts/platformsh/settings.php, which will override the default Drupal
- *   settings.php file.  Users may customize this file for their particular sites.
- * - scripts/platformsh/settings.platformsh/php, which is common to all projects
- *   and should generally not be updated. It maps Platform's environment variables
- *   to Drupal database credentials, $settings, and so forth.
+ * - scripts/platformsh/settings.php, which will overwrite the default Drupal
+ *   settings.php file.  Users may customize this file for their particular
+ *   sites.
+ * - scripts/platformsh/settings.platformsh.php, which is common to all
+ *   projects and should generally not be updated. It maps Platform.sh's
+ *   environment variables to Drupal database credentials, $settings, and so
+ *   forth.
  * - .platform.app.yaml and .platform/*, which provide the Platform.sh-endorsed
- *   default configuration for a Drupal 8 site.
+ *   example configuration for a Drupal 8 site.
  *
  * To update this starter kit when a new release of Drupal, or a new release of
  * the Drupal-Composer project, is available, do the following on a separate
@@ -39,7 +41,7 @@
  *
  */
 
-namespace PlatformSh\composer;
+namespace Platformsh\DrupalExample;
 
 /**
  * The Platformification script for Drupal.
@@ -47,7 +49,7 @@ namespace PlatformSh\composer;
 class Platformify {
 
   /**
-   * Makes the necessary changes to the repository to keep it Platform-friendly.
+   * Makes necessary changes to the repository to keep it Platform.sh-friendly.
    */
   public static function run() {
     static::addPatches();
@@ -80,11 +82,12 @@ class Platformify {
    * and included in a stable patch release.
    */
   protected static function addPatches() {
-    static::updateComposerJson(function(array $composer) {
+    static::updateComposerJson(function (array $composer) {
       $composer['extra']['patches']['drupal/core'] = [
         "Redirect to install.php on empty DB" => "https://www.drupal.org/files/issues/drupal-redirect_to_install-728702-92.patch",
         "Staging directory should not have to be writeable" => "https://www.drupal.org/files/issues/2466197-59.patch",
       ];
+
       return $composer;
     });
   }
@@ -96,18 +99,18 @@ class Platformify {
    *   The path to the docroot.
    */
   protected static function getDocRoot() {
-    return static::getProjectRoot() .  '/web';
+    return static::getProjectRoot() . '/web';
   }
 
   /**
    * Determines the root directory of the current project.
    *
    * The root directory is defined as "where composer.json is". This function
-   * is mainly to work aorund guesswork around where the script is run from vs.
+   * is mainly to work around guesswork around where the script is run from vs.
    * what the "current working directory" may be as a result.
    *
    * @return string
-   *   The root directyory of the current project.
+   *   The root directory of the current project.
    */
   protected static function getProjectRoot() {
     static $dir;
@@ -129,7 +132,7 @@ class Platformify {
    *   A callable that takes an array-ified composer.json file and returns
    *   a modified version of it.
    */
-  protected function updateComposerJson(callable $updates) {
+  protected static function updateComposerJson(callable $updates) {
     $root = static::getProjectRoot();
     $composer = json_decode(file_get_contents($root . '/composer.json'), TRUE);
 
