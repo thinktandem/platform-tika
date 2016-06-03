@@ -33,9 +33,8 @@ for tips on how best to leverage Composer with Drupal 8.
    (used for syncing configuration from development to production) are outside
    the web root. This is a bit more secure as those files are now not web-accessible.
 
-2. The `settings.php` file is provided by default, and configured to import most
-   configuration from the Platform.sh variables system.  (This functions like a
-   `settings.local.php` file, but is controlled through the Platform.sh UI.)
+2. The `settings.php` and `settings.platformsh.php` files are provided by
+   default. The `settings.platformsh.php` file automatically sets up the database connection on Platform.sh, and allows controlling Drupal configuration from environment variables.
 
 3. We include recommended `.platform.app.yaml` and `.platform` files that should suffice
    for most use cases. You are free to tweak them as needed for your particular site.
