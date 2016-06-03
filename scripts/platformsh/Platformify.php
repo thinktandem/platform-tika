@@ -18,10 +18,10 @@
  * The only files in this repository that should be directly updated are:
  *
  * - This script, if necessary, but probably not.
- * - scripts/platformsh/settings.php, which will overwrite the default Drupal
+ * - scripts/platformsh/dist.settings.php, which will overwrite the default Drupal
  *   settings.php file.  Users may customize this file for their particular
  *   sites.
- * - scripts/platformsh/settings.platformsh.php, which is common to all
+ * - scripts/platformsh/dist.settings.platformsh.php, which is common to all
  *   projects and should generally not be updated. It maps Platform.sh's
  *   environment variables to Drupal database credentials, $settings, and so
  *   forth.
