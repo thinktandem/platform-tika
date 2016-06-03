@@ -13,19 +13,19 @@ To start a new Drupal 8 project on Platform.sh, you have 2 options:
 
 2. Take an existing project, add the necessary Platform.sh files, and push it
    to a Platform.sh Git repository. This template includes examples of how to
-   setup a Drupal 8 site.  (See the "differences" section below.)
+   set up a Drupal 8 site.  (See the "differences" section below.)
 
 ## Using as a reference
 
 You can also use this repository as a reference for your own Drupal projects, and
-borrow whatever code is needed.  The most important parts are the `.platform.all.yaml` file,
+borrow whatever code is needed.  The most important parts are the `.platform.app.yaml` file,
 the `.platform` directory, and the changes made to `settings.php`.
 
 ## Managing a Drupal site built with Composer
 
 Once the site is installed, there is no difference between a site hosted on Platform.sh
 and a site hosted anywhere else.  It's just Composer.  See the [Drupal documentation][https://www.drupal.org/node/2404989]
-for tips on how to best leverage Composer with Drupal 8.
+for tips on how best to leverage Composer with Drupal 8.
 
 ## How does this starter kit differ from vanilla Drupal from Drupal.org?
 
