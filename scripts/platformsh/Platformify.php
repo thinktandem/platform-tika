@@ -53,6 +53,7 @@ class Platformify {
    */
   public static function run() {
     static::addPatches();
+    static::useDrupalOrgRepository();
     static::composerUpdate();
     static::copySettingsFiles();
   }
@@ -87,6 +88,22 @@ class Platformify {
         "Redirect to install.php on empty DB" => "https://www.drupal.org/files/issues/drupal-redirect_to_install-728702-92.patch",
         "Staging directory should not have to be writeable" => "https://www.drupal.org/files/issues/2466197-59.patch",
       ];
+
+      return $composer;
+    });
+  }
+
+  /**
+   * Switch the Drupal endpoint to the Drupal.org one, not 3rd party.
+   *
+   * @todo Remove this method once upstream is using the official repositories.
+   */
+  protected static function useDrupalOrgRepository() {
+    static::updateComposerJson(function (array $composer) {
+      $composer['repositories'][0]['url'] = 'https://packages.drupal.org/8';
+
+      unset($composer['conflict']);
+      $composer['replace']['drupal/drupal'] = '*';
 
       return $composer;
     });
