@@ -12,7 +12,7 @@
     "repositories": [
         {
             "type": "composer",
-            "url": "https://packagist.drupal-composer.org"
+            "url": "https://packages.drupal.org/8"
         }
     ],
     "require": {
@@ -31,9 +31,6 @@
         "mikey179/vfsStream": "~1.2",
         "phpunit/phpunit": "~4.8",
         "symfony/css-selector": "~2.8"
-    },
-    "conflict": {
-        "drupal/drupal": "*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -75,5 +72,8 @@
                 "Staging directory should not have to be writeable": "https://www.drupal.org/files/issues/2466197-59.patch"
             }
         }
+    },
+    "replace": {
+        "drupal/drupal": "*"
     }
 }
