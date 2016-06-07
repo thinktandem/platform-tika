@@ -1,7 +1,7 @@
 # Drupal project template for Platform.sh
 
 This project provides a starter kit for Drupal 8 projects hosted on [Platform.sh](http://platform.sh). It
-is very closely based on the [Drupal Composer project][https://github.com/drupal-composer/drupal-project].
+is very closely based on the [Drupal Composer project](https://github.com/drupal-composer/drupal-project).
 
 ## Starting a new project
 
@@ -24,7 +24,7 @@ the `.platform` directory, and the changes made to `settings.php`.
 ## Managing a Drupal site built with Composer
 
 Once the site is installed, there is no difference between a site hosted on Platform.sh
-and a site hosted anywhere else.  It's just Composer.  See the [Drupal documentation][https://www.drupal.org/node/2404989]
+and a site hosted anywhere else.  It's just Composer.  See the [Drupal documentation](https://www.drupal.org/node/2404989)
 for tips on how best to leverage Composer with Drupal 8.
 
 ## How does this starter kit differ from vanilla Drupal from Drupal.org?
