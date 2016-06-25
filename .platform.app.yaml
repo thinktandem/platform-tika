@@ -61,8 +61,8 @@ hooks:
     deploy: |
       cd web
       drush -y cache-rebuild
-      drush -y config-import
       drush -y updatedb
+      drush -y config-import
 
 # The configuration of scheduled execution.
 crons:
