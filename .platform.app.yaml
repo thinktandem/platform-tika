@@ -33,18 +33,56 @@ web:
         "/":
             # The folder to serve static assets for this location from.
             # (Relative to the application root.)
-            root: "web"
+            root: web
 
             # How long to allow static assets from this location to be cached.
-            # (Can be a time or -1 for no caching. Times can be suffixed with
+            # Can be a time or -1 for no caching. Times can be suffixed with
             # "ms" (milliseconds), "s" (seconds), "m" (minutes), "h" (hours),
-            # "d" (days), "w" (weeks), "M" (months, 30d) or "y" (years, 365d).)
-            expires: -1
+            # "d" (days), "w" (weeks), "M" (months, 30d) or "y" (years, 365d).
+            expires: 5m
 
             # Whether to forward disallowed and missing resources from this
             # location to the application.
             # (Can be true, false or a URI path string.)
             passthru: "/index.php"
+
+            # Deny access to static files by default.
+            allow: false
+
+            # Rules for specific URI patterns.
+            rules:
+                # Allow access to common static files.
+                '\.(jpe?g|png|gif|svgz?|css|js|ico|bmp|ttf|woff2?)$':
+                    allow: true
+                '^/robots\.txt$':
+                    allow: true
+
+        "/sites/default/files":
+            # Forward denied or missing files to the front controller.
+            passthru: "/index.php"
+
+            # Allow access to all static files in this location.
+            allow: true
+            root: "web/sites/default/files"
+
+            # Do not execute PHP scripts.
+            scripts: false
+
+            # Set a 5-minute TTL for most static files.
+            expires: 5m
+
+            rules:
+                # CSS and JS files in this location are probably aggregated,
+                # so they can have a long TTL (one month).
+                '\.(css|js)$':
+                    expires: 1M
+
+        "/sites/default/files/php":
+            # Deny access to files in Drupal's default PHP storage folder.
+            # Twig is configured to store elsewhere, but this is just to be safe.
+            passthru: "/index.php"
+            allow: false
+            scripts: false
 
 # The size of the persistent disk of the application (in MB).
 disk: 2048
