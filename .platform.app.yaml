@@ -57,6 +57,12 @@ web:
                 '^/robots\.txt$':
                     allow: true
 
+        "/sites/default":
+            # Deny access to scripts such as settings.php, etc.
+            passthru: "/index.php"
+            allow: false
+            scripts: false
+
         "/sites/default/files":
             # Forward denied or missing files to the front controller.
             passthru: "/index.php"
