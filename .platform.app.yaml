@@ -34,19 +34,23 @@ web:
     # Specific parameters for different URL prefixes.
     locations:
         '/':
-            # The folder to serve static assets for this location from.
-            # (Relative to the application root.)
+            # The folder from which to serve static assets, for this location.
+            #
+            # This is a filesystem path, relative to the application root.
             root: 'web'
 
             # How long to allow static assets from this location to be cached.
-            # Can be a time or -1 for no caching. Times can be suffixed with
-            # "ms" (milliseconds), "s" (seconds), "m" (minutes), "h" (hours),
-            # "d" (days), "w" (weeks), "M" (months, 30d) or "y" (years, 365d).
+            #
+            # Can be a time in seconds, or -1 for no caching. Times can be
+            # suffixed with "s" (seconds), "m" (minutes), "h" (hours), "d"
+            # (days), "w" (weeks), "M" (months, as 30 days) or "y" (years, as
+            # 365 days).
             expires: 5m
 
             # Whether to forward disallowed and missing resources from this
             # location to the application.
-            # (Can be true, false or a URI path string.)
+            #
+            # Can be true, false or a URI path string.
             passthru: '/index.php'
 
             # Deny access to static files in this location.
