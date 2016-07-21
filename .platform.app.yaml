@@ -1,8 +1,10 @@
 # This file describes an application. You can have multiple applications
 # in the same project.
+#
+# See https://docs.platform.sh/user_guide/reference/platform-app-yaml.html
 
 # The name of this app. Must be unique within a project.
-name: php
+name: 'php'
 
 # The runtime the application uses.
 type: 'php:7.0'
@@ -18,6 +20,7 @@ dependencies:
         'drupal/console': '@stable'
 
 # The relationships of the application with services or other applications.
+#
 # The left-hand side is the name of the relationship as it will be exposed
 # to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
 # side is in the form `<service name>:<endpoint name>`.
@@ -33,7 +36,7 @@ web:
         '/':
             # The folder to serve static assets for this location from.
             # (Relative to the application root.)
-            root: web
+            root: 'web'
 
             # How long to allow static assets from this location to be cached.
             # Can be a time or -1 for no caching. Times can be suffixed with
@@ -46,7 +49,7 @@ web:
             # (Can be true, false or a URI path string.)
             passthru: '/index.php'
 
-            # Deny access to static files by default.
+            # Deny access to static files in this location.
             allow: false
 
             # Rules for specific URI patterns.
@@ -64,18 +67,14 @@ web:
             scripts: false
 
         '/sites/default/files':
-            # Forward denied or missing files to the front controller.
-            passthru: '/index.php'
-
-            # Allow access to all static files in this location.
+            # Allow access to all files in the public files directory.
             allow: true
+            expires: 5m
+            passthru: '/index.php'
             root: 'web/sites/default/files'
 
             # Do not execute PHP scripts.
             scripts: false
-
-            # Set a 5-minute TTL for most static files.
-            expires: 5m
 
             rules:
                 # CSS and JS files in this location are probably aggregated,
