@@ -83,13 +83,6 @@ web:
                 '\.(css|js)$':
                     expires: 1M
 
-        '/sites/default/files/php':
-            # Deny access to files in Drupal's default PHP storage folder.
-            # Twig is configured to store elsewhere, but this is just to be safe.
-            passthru: '/index.php'
-            allow: false
-            scripts: false
-
 # The size of the persistent disk of the application (in MB).
 disk: 2048
 
