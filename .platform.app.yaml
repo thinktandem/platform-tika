@@ -79,9 +79,8 @@ web:
             scripts: false
 
             rules:
-                # CSS and JS files in this location are probably aggregated,
-                # so they can have a long TTL (one month).
-                '\.(css|js)$':
+                # Provide a long TTL (one month) for aggregated CSS and JS files.
+                '^/sites/default/files/(css|jss)':
                     expires: 1M
 
 # The size of the persistent disk of the application (in MB).
