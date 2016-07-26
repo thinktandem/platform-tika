@@ -83,9 +83,9 @@ web:
             scripts: false
 
             rules:
-                # Provide a long TTL (one month) for aggregated CSS and JS files.
+                # Provide a longer TTL (2 weeks) for aggregated CSS and JS files.
                 '^/sites/default/files/(css|jss)':
-                    expires: 1M
+                    expires: 2w
 
 # The size of the persistent disk of the application (in MB).
 disk: 2048
