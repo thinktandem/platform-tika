@@ -7,7 +7,7 @@ mysql:
     type: "mysql:10.0"
     disk: 2048
 #
-#redis:
+#rediscache:
 #    type: "redis:3.0"
 #
 #solr:
