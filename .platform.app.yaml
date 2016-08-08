@@ -25,7 +25,7 @@ dependencies:
 # to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
 # side is in the form `<service name>:<endpoint name>`.
 relationships:
-    database: 'mysql:mysql'
+    database: 'mysqldb:mysql'
 #    solr: 'solr:solr'
 #    redis: 'rediscache:redis'
 
