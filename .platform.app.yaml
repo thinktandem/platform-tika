@@ -4,7 +4,7 @@
 # See https://docs.platform.sh/user_guide/reference/platform-app-yaml.html
 
 # The name of this app. Must be unique within a project.
-name: 'php'
+name: 'app'
 
 # The runtime the application uses.
 type: 'php:7.0'
@@ -25,8 +25,8 @@ dependencies:
 # to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
 # side is in the form `<service name>:<endpoint name>`.
 relationships:
-    database: 'mysql:mysql'
-#    solr: 'solr:solr'
+    database: 'mysqldb:mysql'
+#    solr: 'solrsearch:solr'
 #    redis: 'rediscache:redis'
 
 # The configuration of app when it is exposed to the web.
