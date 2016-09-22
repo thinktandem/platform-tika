@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cc0a8cd248a478019d155a8971c40ebd",
-    "content-hash": "fc24e331ce8a5d69a18b847009c1085a",
+    "hash": "abddf805e4fbdb7522b231046ab8b2bb",
+    "content-hash": "a7d72a74b0459a59cde7ed10100f674d",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1142,7 +1142,7 @@
             "type": "drupal-core",
             "extra": {
                 "patches_applied": {
-                    "Redirect to install.php on empty DB": "https://www.drupal.org/files/issues/drupal-redirect_to_install-728702-92.patch"
+                    "Redirect to install.php on empty DB": "https://www.drupal.org/files/issues/728702-install-redirect_7.patch"
                 }
             },
             "autoload": {
