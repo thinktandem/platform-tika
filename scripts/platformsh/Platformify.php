@@ -82,7 +82,7 @@ class Platformify {
   protected static function addPatches() {
     static::updateComposerJson(function (array $composer) {
       $composer['extra']['patches']['drupal/core'] = [
-        "Redirect to install.php on empty DB" => "https://www.drupal.org/files/issues/728702-install-redirect_7.patch",
+        "Redirect to install.php on empty DB" => "https://www.drupal.org/files/issues/728702-163.patch",
       ];
 
       return $composer;
