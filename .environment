@@ -1,0 +1,4 @@
+# Statements in this file will get executed by the shell when logging into the container.
+
+# Allow executable app dependencies from Composer to be run from the path.
+export PATH=/app/vendor/bin:$PATH
