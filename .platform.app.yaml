@@ -84,7 +84,9 @@ web:
 # The size of the persistent disk of the application (in MB).
 disk: 2048
 
-# The mounts that will be performed when the package is deployed.
+# The 'mounts' describe writable, persistent filesystem mounts in the application. The keys are
+# directory paths, relative to the application root. The values are strings such as
+# 'shared:files/NAME', where NAME is just a unique name for the mount.
 mounts:
     '/web/sites/default/files': 'shared:files/files'
     '/tmp': 'shared:files/tmp'
@@ -93,7 +95,7 @@ mounts:
 
 # The hooks executed at various points in the lifecycle of the application.
 hooks:
-    # We run deploy hook after your application has been deployed and started.
+    # The deploy hook runs after your application has been deployed and started.
     deploy: |
       cd web
       drush -y cache-rebuild
