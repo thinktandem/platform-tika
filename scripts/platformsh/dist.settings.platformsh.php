@@ -27,7 +27,7 @@ if (isset($_ENV['PLATFORM_RELATIONSHIPS'])) {
         $databases['default']['default'] = $database;
       }
       else {
-        $databases['default']['slave'][] = $database;
+        $databases['default']['replica'][] = $database;
       }
     }
   }
