@@ -13,7 +13,7 @@
 $databases = [];
 $config_directories = [];
 $settings['update_free_access'] = FALSE;
-$settings['container_yamls'][] = __DIR__ . '/services.yml';
+$settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 $settings['file_scan_ignore_directories'] = [
   'node_modules',
   'bower_components',
@@ -40,11 +40,11 @@ $settings['install_profile'] = 'standard';
 $config_directories[CONFIG_SYNC_DIRECTORY] = '../config/sync';
 
 // Automatic Platform.sh settings.
-if (file_exists(__DIR__ . '/settings.platformsh.php')) {
-  include __DIR__ . '/settings.platformsh.php';
+if (file_exists($app_root . '/' . $site_path . '/settings.platformsh.php')) {
+  include $app_root . '/' . $site_path . '/settings.platformsh.php';
 }
 
 // Local settings. These come last so that they can override anything.
-if (file_exists(__DIR__ . '/settings.local.php')) {
-  include __DIR__ . '/settings.local.php';
+if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
+  include $app_root . '/' . $site_path . '/settings.local.php';
 }
