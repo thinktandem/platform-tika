@@ -71,11 +71,6 @@
             "drush/contrib/{$name}": [
                 "type:drupal-drush"
             ]
-        },
-        "patches": {
-            "drupal/core": {
-                "Redirect to install.php on empty DB": "https://www.drupal.org/files/issues/728702-163.patch"
-            }
         }
     },
     "replace": {
