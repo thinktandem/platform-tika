@@ -22,11 +22,11 @@ if (isset($_ENV['PLATFORM_RELATIONSHIPS'])) {
           'host' => $instance['host'],
           'port' => $instance['port'],
         ];
-        
+
         if (!empty($instance['query']['compression'])) {
           $database['pdo'][PDO::MYSQL_ATTR_COMPRESS] = TRUE;
         }
-        
+
         if (!empty($instance['query']['is_master'])) {
           $databases[$drupal_key]['default'] = $database;
         }
