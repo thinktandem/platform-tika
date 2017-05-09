@@ -9,9 +9,6 @@ name: 'app'
 # The runtime the application uses.
 type: 'php:7.0'
 
-# Configuration of the build of this application.
-build:
-    flavor: composer
 
 # The relationships of the application with services or other applications.
 #
@@ -22,6 +19,33 @@ relationships:
     database: 'mysqldb:mysql'
 #    solr: 'solrsearch:solr'
 #    redis: 'rediscache:redis'
+
+# The size of the persistent disk of the application (in MB).
+disk: 2048
+
+# The 'mounts' describe writable, persistent filesystem mounts in the application. The keys are
+# directory paths, relative to the application root. The values are strings such as
+# 'shared:files/NAME', where NAME is just a unique name for the mount.
+mounts:
+    '/web/sites/default/files': 'shared:files/files'
+    '/tmp': 'shared:files/tmp'
+    '/private': 'shared:files/private'
+    '/drush-backups': 'shared:files/drush-backups'
+
+
+# Configuration of the build of this application.
+build:
+    flavor: composer
+
+# The hooks executed at various points in the lifecycle of the application.
+hooks:
+    # The deploy hook runs after your application has been deployed and started.
+    deploy: |
+      cd web
+      drush -y cache-rebuild
+      drush -y updatedb
+      drush -y config-import
+      drush -y entup
 
 # The configuration of app when it is exposed to the web.
 web:
@@ -74,28 +98,6 @@ web:
                 # Provide a longer TTL (2 weeks) for aggregated CSS and JS files.
                 '^/sites/default/files/(css|js)':
                     expires: 2w
-
-# The size of the persistent disk of the application (in MB).
-disk: 2048
-
-# The 'mounts' describe writable, persistent filesystem mounts in the application. The keys are
-# directory paths, relative to the application root. The values are strings such as
-# 'shared:files/NAME', where NAME is just a unique name for the mount.
-mounts:
-    '/web/sites/default/files': 'shared:files/files'
-    '/tmp': 'shared:files/tmp'
-    '/private': 'shared:files/private'
-    '/drush-backups': 'shared:files/drush-backups'
-
-# The hooks executed at various points in the lifecycle of the application.
-hooks:
-    # The deploy hook runs after your application has been deployed and started.
-    deploy: |
-      cd web
-      drush -y cache-rebuild
-      drush -y updatedb
-      drush -y config-import
-      drush -y entup
 
 # The configuration of scheduled execution.
 crons:
