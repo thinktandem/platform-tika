@@ -106,7 +106,7 @@ if (isset($_ENV['PLATFORM_PROJECT_ENTROPY']) && empty($settings['hash_salt'])) {
   $settings['hash_salt'] = $_ENV['PLATFORM_PROJECT_ENTROPY'];
 }
 
-// Sete the deployment identifier, which is used by some Drupal cache systems.
+// Set the deployment identifier, which is used by some Drupal cache systems.
 if (isset($_ENV['PLATFORM_TREE_ID']) && empty($settings['deployment_identifier'])) {
   $settings['deployment_identifier'] = $_ENV['PLATFORM_TREE_ID'];
 }
