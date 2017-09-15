@@ -3,9 +3,6 @@
 # environment.
 
 # Allow executable app dependencies from Composer to be run from the path.
-# Enterprise has a slightly different set of include paths.
-if [ "${PLATFORM_MODE}" == "enterprise" ]; then
-  export PATH="/app/${PLATFORM_PROJECT}/vendor/bin:${PATH}"
-else
-  export PATH=/app/vendor/bin:$PATH
+if [ -n "$PLATFORM_APP_DIR" ] ; then
+  export PATH="${PLATFORM_APP_DIR}/vendor/bin:$PATH"
 fi
