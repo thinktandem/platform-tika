@@ -3,6 +3,9 @@
 # environment.
 
 # Allow executable app dependencies from Composer to be run from the path.
-if [ -n "$PLATFORM_APP_DIR" ] ; then
-  export PATH="${PLATFORM_APP_DIR}/vendor/bin:$PATH"
+if [ -n "$PLATFORM_APP_DIR" -a -f "$PLATFORM_APP_DIR"/composer.json ] ; then
+  bin=$(composer config bin-dir --working-dir="$PLATFORM_APP_DIR" --no-interaction 2>/dev/null)
+  if [ -n "$bin" ] ; then
+    export PATH="${PLATFORM_APP_DIR}/${bin}:${PATH}"
+  fi
 fi
