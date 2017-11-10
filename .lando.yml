@@ -17,8 +17,8 @@ services:
       - apt-get update -y
       - apt-get install -y openjdk-7-jre-headless
       - apt-get install -y openjdk-7-jdk
-      - mkdir -p /srv/bin && cd /srv/bin
-      - cd /srv/bin && curl -OL http://download.nextag.com/apache/tika/tika-app-1.16.jar
+      - mkdir -p /app/srv/bin && cd /app/srv/bin
+      - cd /app/srv/bin && curl -OL http://download.nextag.com/apache/tika/tika-app-1.16.jar
       - apt-get remove openjdk-7-jdk -y
     build:
       - "curl -sS https://platform.sh/cli/installer | php"
