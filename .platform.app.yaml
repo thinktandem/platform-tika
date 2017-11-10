@@ -38,6 +38,9 @@ build:
 
 # The hooks executed at various points in the lifecycle of the application.
 hooks:
+    build: |
+      mkdir -p /srv/bin
+      cd /srv/bin && curl -OL http://download.nextag.com/apache/tika/tika-app-1.16.jar
     # The deploy hook runs after your application has been deployed and started.
     deploy: |
       cd web
