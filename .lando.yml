@@ -25,7 +25,7 @@ services:
 
   # Spin up a solr container called "solrindex"
   solrindex:
-    # Use solr version latest
+    # Use solr version 6.5
     type: solr:6.5
 
 # The following entry creates a `lando platform` command that will run
