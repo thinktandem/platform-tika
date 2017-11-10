@@ -10,6 +10,13 @@ mysqldb:
 #rediscache:
 #    type: redis:3.2
 #
-#solrsearch:
-#    type: solr:6.6
-#    disk: 1024
+solrsearch:
+    type: solr:6.6
+    disk: 1024
+    configuration:
+        cores:
+            maincore:
+                conf_dir: !archive "solr-conf"
+        endpoints:
+            main:
+                core: maincore
