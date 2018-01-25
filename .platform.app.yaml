@@ -40,7 +40,7 @@ build:
 hooks:
     build: |
       mkdir -p /app/srv/bin
-      cd /app/srv/bin && curl -OL http://download.nextag.com/apache/tika/tika-app-1.16.jar
+      cd /app/srv/bin && curl -OL http://archive.apache.org/dist/tika/tika-app-1.16.jar
     # The deploy hook runs after your application has been deployed and started.
     deploy: |
       cd web
